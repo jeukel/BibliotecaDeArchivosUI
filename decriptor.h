@@ -1,50 +1,30 @@
 #ifndef DECRIPTOR_H
 #define DECRIPTOR_H
-#include <string>
-#include "SimpleList.h"
-#include "array/array.h"
-#include "permissionslayer.h"
-#include "raidManager/raidmanager.h"
-#include "user.h"
 
-using namespace std;
+decriptor(string pline, user* pCurrentuser, bool pRoot, bool pServer );
 
-class decriptor
-{
-public:
-    decriptor(string pline, user* pCurrentuser, bool pRoot, bool pServer );
+char* line;
+char* fileName;
+SimpleList<char*> pNames;
+SimpleList<char*> cNames;
+SimpleList<char*> cValius;
+SimpleList<int> cSais;
+int RegSaiz;
 
-private:
-    //user
-    user * currentUser;
-    bool root ;
-    bool isServer;
-    //file system
-    permissionsLayer* FS;
-    raidManager* RM;
-    string line;
-    string fileName;
-    SimpleList<char*> pNames;
-    SimpleList<char*> cNames;
-    SimpleList<char*> cValius;
-    SimpleList<int> cSais;
-    int RegSaiz;
+char *NextWord();
+char* charToStr(char* pChar);
 
-    //Get the next word of the string??
-    string NextWord();
+array<char*> arrayCharToSL(SimpleList<char*> toConvert);
+array<int> arrayCharToSL(SimpleList<int> toConvert);
 
-    //???
-    int ColNameToIndex(string pName);
+int ColNameToIndex(string pName);
+int StrToInt (string ToParse);
 
-    array<char*> arrayCharToSL(SimpleList<char*> toConvert);
-    array<int> arrayCharToSL(SimpleList<int> toConvert);
-    string charToStr(char* pChar);
-    int StrToInt (string ToParse);
-    void getCreationArguments ();
-    void getValuedArguments ();
-    void getArguments();
-    void decript ();
-    void askForValidCommand();
-};
+void getCreationArguments ();
+void getValuedArguments ();
+void askForValidCommand();
+void getArguments();
+void decript ();
+
 
 #endif // DECRIPTOR_H

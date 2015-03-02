@@ -1,49 +1,22 @@
-#include <iostream>
-#include <fstream>
-#include <limits>
-#include <cstdlib>
-#include <sstream>
 #include <stdio.h>
-#include <string.h>
-#include "array/array.h"
 #include "decriptor.h"
 
-using namespace std;
+static char* commandLine;
 
-static string commandLine;
-decriptor::decriptor(string pline, user* pCurrentuser, bool pRoot, bool pServer) {
-    this->currentUser = pCurrentuser;
-    this->root = pRoot;
-    this->FS = new permissionsLayer();
-    this->RM = new raidManager();
-    this->line = pline;
-    this->pNames = SimpleList <char*>();
-    this->cNames = SimpleList <char*>();
-    this->cValius = SimpleList <char*>();
-    this->cSais = SimpleList <int > ();
-    this->RegSaiz = ZE_ROW;
-    this->fileName = EMPTY_STRING;
-    this->isServer = pServer;
-    commandLine = pline;
-    decript();
-}
-
-string decriptor::NextWord() {
+char* NextWord() {
     string bhla = EMPTY_STRING;
     int cut = this->line.find(' ');
     bhla = this->line.substr(ZE_ROW, cut);
     this->line =  this->line.substr(cut + ONE_BYTE, this->line.length());
     return bhla;
 }
-
-
-string decriptor::charToStr(char* pChar){
+char* charToStr(char* pChar){
     string toReturn = EMPTY_STRING;
     toReturn.assign(pChar , sizeof(pChar));
     return toReturn;
 }
 
-array<char*> decriptor::arrayCharToSL(SimpleList<char*> toConvert){
+array<char*> arrayCharToSL(SimpleList<char*> toConvert){
     array<char*> toReturn (toConvert.getLenght());
     int i = ZE_ROW;
     while(toConvert.getLenght() != ZE_ROW){
@@ -53,8 +26,7 @@ array<char*> decriptor::arrayCharToSL(SimpleList<char*> toConvert){
     }
     return toReturn;
 }
-
-array<int> decriptor::arrayCharToSL(SimpleList<int> toConvert){
+array<int> arrayCharToSL(SimpleList<int> toConvert){
     array<int> toReturn (toConvert.getLenght());
     int i = ZE_ROW;
     while(toConvert.getLenght() != ZE_ROW){
@@ -65,7 +37,7 @@ array<int> decriptor::arrayCharToSL(SimpleList<int> toConvert){
     return toReturn;
 }
 
-int decriptor::ColNameToIndex(string pName) {
+int ColNameToIndex(string pName) {
     string ColName = EMPTY_STRING;
     int Index = MINUS_ONE;
     SimpleList<char*>* temp = &this->cNames;
@@ -80,13 +52,12 @@ int decriptor::ColNameToIndex(string pName) {
     }
     return Index;
 }
-
-int decriptor::StrToInt (string ToParse) {
+int StrToInt (string ToParse) {
     int number  = atoi(ToParse.c_str());
     return number;
 }
 
-void decriptor::getCreationArguments () {
+void getCreationArguments () {
     string col = EMPTY_STRING;
     int split = ZE_ROW;
     int cut = ZE_ROW;
@@ -104,8 +75,7 @@ void decriptor::getCreationArguments () {
         cSais.append(saiz);
     }
 }
-
-void decriptor::getValuedArguments () {
+void getValuedArguments () {
     string valiu = EMPTY_STRING;
     string col = EMPTY_STRING;
     int split = ZE_ROW;
@@ -123,8 +93,13 @@ void decriptor::getValuedArguments () {
         cValius.append(const_cast<char*>(valiu.c_str()));
     }
 }
-
-void decriptor::getArguments() {
+void askForValidCommand(){
+    string command;
+    std::getline(std::cin , command);
+    this->line = command;
+    decript();
+}
+void getArguments() {
     string col = EMPTY_STRING;
     int cut = ZE_ROW;
 
@@ -136,15 +111,7 @@ void decriptor::getArguments() {
         cNames.append(const_cast<char*>( col.c_str()));
     }
 }
-
-void decriptor::askForValidCommand(){
-    string command;
-    std::getline(std::cin , command);
-    this->line = command;
-    decript();
-}
-
-void decriptor::decript () {
+void decript () {
 
     string fName = EMPTY_STRING;
     string cName = EMPTY_STRING;
@@ -528,4 +495,5 @@ void decriptor::decript () {
             cout << INVALID_COMMAND << endl;
         }
     }
-    }
+}
+
