@@ -1,23 +1,14 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "filesystem.h"
+#include "../BibliotecaDeArchivos/hard_drive.h"
 #define MAX_SIZE_IN_BUFFER 96
 #define EXIT 'exit'
 
 char command;
 char command_buffer[MAX_SIZE_IN_BUFFER];
 int char_count;
-int var = 1;
-
-void cleartoendofline( void )
-{
-    char command;
-    command = getchar();
-    while( command != '\n' ){
-        command = getchar();
-    }
-}
+int var;
 
 void presentation(){
     printf("Enter a line of text (<96 chars)\n");
@@ -34,50 +25,55 @@ void presentation(){
     }
 }
 
-
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
-    //presentation();
+//    presentation();
 
+    var = 0;
     if (argc == 3){
-        if(argv[1] == "-umount"){
-            cerrar_bib(argv[2]);
+        if(!strcmp (argv[1], "umount")){
+            umount((int)*argv[2]);
+
+        }else if(!strcmp (argv[1],"ls")){
+            listComp(argv[2]);
+
         }else{
-            fprintf (stderr, "Unknown option `-%c'.\n", argv[3]);
+            fprintf (stderr, "Unknown option `-%c'.\n", argc);
         }
 
     }else if(argc == 4){
-        if(argv[1] == "-create"){
-            //fprintf ("Sintax:-create name flags\n");
-            crear_bib(argv[2], argv[3]);
+        if(!strcmp (argv[1],"create")){
+            //create(argv[2], argv[3]);
 
-        }else if(argv[1] == "-mount"){
-            abrir_bib(argv[2], argv[3]);
+        }else if(!strcmp (argv[1], "mount")){
+            //mount(argv[2], (int*)argv[3]);
 
-        }else if(argv[1] == "-mv"){
-            incluir_comp(argv[2], argv[3]);
+        }else if(!strcmp (argv[1],"open")){
+            //openc(argv[2], argv[3]);
 
-        }else if(argv[1] == "-ls"){
-            listar_comps(argv[2], argv[3]);
-
-        }else if(argv[1] == "-open"){
-            abrir_comp(argv[2], argv[3]);
-
-        }else if(argv[1] == "-delete"){
-            eliminar_comp(argv[2], argv[3]);
+        }else if(!strcmp (argv[1],"del")){
+            //del(argv[2], argv[3]);
 
         } else {
-            fprintf (stderr, "Unknown option `-%c'.\n", argv[3]);
+            fprintf (stderr, "Unknown option `-%c'.\n", argc);
         }
 
     }else if(argc == 5){
-        if(argv[1] == "-print"){
-            leer_comp(argv[2], argv[3], argv[4]);
+        if(!strcmp (argv[1],"print")){
+            //print(argv[2], argv[3], argv[4]);
+
+        }else if(!strcmp (argv[1],"export")){
+            //exportFile(argv[2], argv[3], argv[4]);
+
+        }else if(!strcmp (argv[1],"import")){
+            //import(argv[2], argv[3], argv[4]);
+
         }else{
-            fprintf (stderr, "Unknown option `-%c'.\n", argv[3]);
+            fprintf (stderr, "Unknown option `-%c'.\n", argc);
         }
+
     }else{
-        fprintf (stderr, "Unknown option `-%c'.\n", argv[3]);
+        fprintf (stderr, "Unknown option `-%c'.\n", argc);
     }
 
     return var;
